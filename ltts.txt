@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+hello world
+=======
 Well Come 
+>>>>>>> cad36cfab400fe4abf503dc8d99edcd6c063f5fd
 LTTS is known for its core engineering focus, especially in embedded systems, mechanical design, digital engineering, and plant engineering.
 
 Serves industries like automotive, aerospace, telecom, industrial products, medical devices, and more.
@@ -18,3 +22,7 @@ Owns 90+ patents and growing.
 Focus on diversity, inclusion, and work-life balance.
 
 Corporate Social Responsibility (CSR) initiatives in education, sustainability, and community support.
+<<<<<<< HEAD
+
+=======
+>>>>>>> cad36cfab400fe4abf503dc8d99edcd6c063f5fd
