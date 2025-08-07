@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <string.h>
+void convertTime(char* input) {
+    int hr;
+    char min[3], sec[3], ampm[3];
+    sscanf(input, "%d:%2s:%2s%s", &hr, min, sec, ampm);
+    if (strcmp(ampm, "AM") == 0) {
+        if (hr == 12) {
+            hr = 0;
+        }
+    } else {
+        if (hr != 12) {
+            hr += 12;
+        }
+    }
+    printf("%02d:%s:%s\n", hr, min, sec);
+}
+int main() {
+    char timeInput[10];
+    scanf("%s", timeInput);
+    convertTime(timeInput);
+    return 0;
+}

@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <stdlib.h>
+int calculateDiagonalDifference(int mat[][100], int size) {
+    int primaryDiagonal = 0, secondaryDiagonal = 0;
+    for (int i = 0; i < size; i++) {
+        primaryDiagonal += mat[i][i]; // Sum of primary diagonal
+        secondaryDiagonal += mat[i][size - 1 - i]; // Sum of secondary diagonal
+    }
+    return abs(primaryDiagonal - secondaryDiagonal); // Return absolute difference
+}
+int main() {
+    int dimension;
+    scanf("%d", &dimension);
+    int squareMatrix[100][100]; // Assuming maximum size of the matrix is 100x100
+    for (int i = 0; i < dimension; i++) {
+        for (int j = 0; j < dimension; j++) {
+            scanf("%d", &squareMatrix[i][j]);
+        }
+    }
+    int result = calculateDiagonalDifference(squareMatrix, dimension);
+    printf("%d\n", result);
+    return 0;
+}
