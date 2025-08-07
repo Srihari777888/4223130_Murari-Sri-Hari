@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+#include <ctype.h>
+char* pangrams(char* s) {
+    bool alphabet[26] = {false};
+    int index;
+    for (int i = 0; s[i] != '\0'; i++) {
+        if (isalpha(s[i])) {
+            index = tolower(s[i]) - 'a';
+            alphabet[index] = true;
+        }
+    }
+    for (int j = 0; j < 26; j++) {
+        if (!alphabet[j]) {
+            return "not pangram";
+        }
+    }
+    return "pangram";
+}
+int main() {
+    char input[1001];
+    fgets(input, sizeof(input), stdin);
+    printf("%s\n", pangrams(input));
+    return 0;
+}

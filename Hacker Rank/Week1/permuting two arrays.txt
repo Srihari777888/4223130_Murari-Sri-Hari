@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <stdlib.h>
+int compare(const void *a, const void *b) {
+    return (*(int *)a - *(int *)b);
+}
+char* twoArrays(int k, int A_length, int A[], int B_length, int B[]) {
+    qsort(A, A_length, sizeof(int), compare);
+    qsort(B, B_length, sizeof(int), compare);
+    for (int i = 0; i < A_length; i++) {
+        if (A[i] + B[B_length - 1 - i] < k) {
+            return "NO"; 
+        }
+    }
+    return "YES";
+}
+int main() {
+    int q; 
+    scanf("%d", &q);
+    while (q--) {
+        int n, k;
+        scanf("%d %d", &n, &k);
+        int A[n], B[n];
+        for (int i = 0; i < n; i++) {
+            scanf("%d", &A[i]);
+        }
+        for (int i = 0; i < n; i++) {
+            scanf("%d", &B[i]);
+        }
+        printf("%s\n", twoArrays(k, n, A, n, B));
+    }
+    return 0;
+}

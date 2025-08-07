@@ -1,0 +1,38 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define MAX_STR 1000
+#define MAX_LEN 100
+int countMatches(char strArray[MAX_STR][MAX_LEN], int strCount, char queryArray[MAX_STR][MAX_LEN], int queryCount, int matchCount[MAX_STR]) {
+    for (int i = 0; i < queryCount; i++) {
+        matchCount[i] = 0;
+        for (int j = 0; j < strCount; j++) {
+            if (strcmp(queryArray[i], strArray[j]) == 0) {
+                matchCount[i]++;
+            }
+        }
+    }
+    return 0;
+}
+int main() {
+    int strCount;
+    scanf("%d", &strCount);
+    char strArray[MAX_STR][MAX_LEN];
+    for (int i = 0; i < strCount; i++) {
+        scanf("%s", strArray[i]);
+    }
+    int queryCount;
+    scanf("%d", &queryCount);
+    char queryArray[MAX_STR][MAX_LEN];
+    for (int i = 0; i < queryCount; i++) {
+        scanf("%s", queryArray[i]);
+    }
+    int matchCount[MAX_STR];
+    countMatches(strArray, strCount, queryArray, queryCount, matchCount);
+    for (int i = 0; i < queryCount; i++) {
+        printf("%d\n", matchCount[i]);
+    }
+    return 0;
+}

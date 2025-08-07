@@ -1,0 +1,45 @@
+
+#include <stdio.h>
+
+void calculateRatios(int size, int* numbers) {
+    int pos_count = 0;
+    int neg_count = 0;
+    int zero_count = 0;
+
+    // Count positive, negative, and zero elements
+    for (int i = 0; i < size; i++) {
+        if (numbers[i] > 0) {
+            pos_count++;
+        } else if (numbers[i] < 0) {
+            neg_count++;
+        } else {
+            zero_count++;
+        }
+    }
+
+    // Calculate ratios
+    double pos_ratio = (double)pos_count / size;
+    double neg_ratio = (double)neg_count / size;
+    double zero_ratio = (double)zero_count / size;
+
+    // Print results with six decimal places
+    printf("%.6f\n", pos_ratio);
+    printf("%.6f\n", neg_ratio);
+    printf("%.6f\n", zero_ratio);
+}
+
+int main() {
+    int array_size;
+    scanf("%d", &array_size); // Read the size of the array
+    int numbers[array_size];
+
+    // Read the array elements
+    for (int i = 0; i < array_size; i++) {
+        scanf("%d", &numbers[i]);
+    }
+
+    // Call the calculateRatios function
+    calculateRatios(array_size, numbers);
+
+    return 0;
+}

@@ -1,0 +1,15 @@
+#include <stdio.h>
+unsigned int flipBits(unsigned int num) {
+    return ~num;
+}
+int main() {
+    int q;
+    scanf("%d", &q);
+    for (int i = 0; i < q; i++) {
+        unsigned int input;
+        scanf("%u", &input);
+        unsigned int flipped = flipBits(input);
+        printf("%u\n", flipped);
+    }
+    return 0;
+}
