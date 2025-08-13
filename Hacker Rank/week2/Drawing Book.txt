@@ -1,0 +1,15 @@
+#include <stdio.h>
+int pagecount(int i, int h) {
+    int Front = h/2;
+    int Back = (i/2)-(h/2);
+    return Front<Back?Front:Back;
+}
+
+int main() {
+    int i, h;
+    scanf("%d", &i);
+    scanf("%d", &h);
+    int res = pagecount(i,h);
+    printf("%d", res);
+    return 0;
+}

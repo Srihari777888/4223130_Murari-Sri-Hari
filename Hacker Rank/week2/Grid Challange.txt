@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int compare(const void *a, const void *b) {
+    return (*(char *)a - *(char *)b);
+}
+void sortRow(char *row) {
+    qsort(row, strlen(row), sizeof(char), compare);
+}
+int isColumnSorted(char **grid, int n, int m) {
+    for (int j = 0; j < m; j++) {
+        for (int i = 1; i < n; i++) {
+            if (grid[i][j] < grid[i - 1][j]) {
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
+char* gridChallenge(char **grid, int n) {
+    for (int i = 0; i < n; i++) {
+        sortRow(grid[i]);
+    }
+    if (isColumnSorted(grid, n, strlen(grid[0]))) {
+        return "YES";
+    } else {
+        return "NO";
+    }
+}
+int main() {
+    int t;
+    scanf("%d", &t);
+    while (t--) {
+        int n;
+        scanf("%d", &n);
+        char **grid = (char **)malloc(n * sizeof(char *));
+        for (int i = 0; i < n; i++) {
+            grid[i] = (char *)malloc((n + 1) * sizeof(char));
+            scanf("%s", grid[i]);
+        }
+        char *result = gridChallenge(grid, n);
+        printf("%s\n", result);
+
+        for (int i = 0; i < n; i++) {
+            free(grid[i]);
+        }
+        free(grid);
+    }
+    return 0;
+}

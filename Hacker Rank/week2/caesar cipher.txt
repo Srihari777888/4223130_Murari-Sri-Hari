@@ -1,0 +1,23 @@
+#include<stdio.h>
+#include<string.h>
+#include<ctype.h>
+char* caesarCipher(char* s,int k){
+    for(int i=0;s[i]!='\0';i++){
+        if (isalpha(s[i])){
+            char base =islower(s[i]) ? 'a' : 'A';
+            s[i]=base +(s[i]-base +k)%26;
+            
+        }
+    }
+    return s;
+}
+int main(){
+    int u,r;
+    char s[101];
+    scanf("%d",&u);
+    scanf("%s",s);
+    scanf("%d",&r);
+    char* encrypted_string = caesarCipher(s, r);
+    printf("%s\n",encrypted_string);
+    return 0;
+}

@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 200
+
+int R, C, N;
+char grid[MAX][MAX], temp[MAX][MAX];
+
+void copy_grid(char dest[MAX][MAX], char src[MAX][MAX]) {
+    for (int i = 0; i < R; i++)
+        for (int j = 0; j < C; j++)
+            dest[i][j] = src[i][j];
+}
+
+void fill_bombs(char g[MAX][MAX]) {
+    for (int i = 0; i < R; i++)
+        for (int j = 0; j < C; j++)
+            g[i][j] = 'O';
+}
+
+void detonate(char g[MAX][MAX]) {
+    char mark[MAX][MAX];
+    fill_bombs(mark); // start with full bombs
+
+    for (int i = 0; i < R; i++) {
+        for (int j = 0; j < C; j++) {
+            if (g[i][j] == 'O') {
+                mark[i][j] = '.';
+                if (i > 0) mark[i - 1][j] = '.';
+                if (i < R - 1) mark[i + 1][j] = '.';
+                if (j > 0) mark[i][j - 1] = '.';
+                if (j < C - 1) mark[i][j + 1] = '.';
+            }
+        }
+    }
+    copy_grid(g, mark);
+}
+
+int main() {
+    scanf("%d %d %d", &R, &C, &N);
+    for (int i = 0; i < R; i++)
+        scanf("%s", grid[i]);
+
+    if (N == 1) {
+        // initial grid
+    } else if (N % 2 == 0) {
+        fill_bombs(grid);
+    } else if (N % 4 == 3) {
+        detonate(grid);
+    } else if (N % 4 == 1) {
+        detonate(grid);
+        detonate(grid);
+    }
+
+    for (int i = 0; i < R; i++) {
+        for (int j = 0; j < C; j++)
+            printf("%c", grid[i][j]);
+        printf("\n");
+    }
+    return 0;
+}
