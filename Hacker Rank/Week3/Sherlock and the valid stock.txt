@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <string.h>
+
+char* isValid(char* s) {
+    int freq[26] = {0};
+    int len = strlen(s);
+    for (int i = 0; i < len; i++) {
+        freq[s[i] - 'a']++;
+    }
+
+    int minFreq = 0, maxFreq = 0;
+    int minCount = 0, maxCount = 0;
+
+    // find min and max ignoring zeros
+    for (int i = 0; i < 26; i++) {
+        if (freq[i] > 0) {
+            if (minFreq == 0 || freq[i] < minFreq) minFreq = freq[i];
+            if (freq[i] > maxFreq) maxFreq = freq[i];
+        }
+    }
+
+    // count how many have minFreq and maxFreq
+    for (int i = 0; i < 26; i++) {
+        if (freq[i] == minFreq) minCount++;
+        else if (freq[i] == maxFreq) maxCount++;
+    }
+
+    if (minFreq == maxFreq) return "YES";  // all same
+    if (minFreq == 1 && minCount == 1 && (maxFreq * maxCount + minFreq) == len) return "YES"; 
+    if ((maxFreq - minFreq == 1) && maxCount == 1) return "YES";
+    
+    return "NO";
+}
+
+int main() {
+    char s[100005];
+    scanf("%s", s);
+    printf("%s\n", isValid(s));
+    return 0;
+}
