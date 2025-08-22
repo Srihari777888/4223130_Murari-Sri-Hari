@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define SIZE 100000 
+
+typedef struct {
+    int arr[SIZE];
+    int topIndex;
+} Stack;
+
+void initStack(Stack *stk) {
+    stk->topIndex = -1;
+}
+
+int isStackEmpty(Stack *stk) {
+    return stk->topIndex == -1;
+}
+
+void pushStack(Stack *stk, int value) {
+    if (stk->topIndex < SIZE - 1) {
+        stk->arr[++(stk->topIndex)] = value;
+    }
+}
+
+int popStack(Stack *stk) {
+    if (!isStackEmpty(stk)) {
+        return stk->arr[(stk->topIndex)--];
+    }
+    return -1;
+}
+
+int peekStack(Stack *stk) {
+    if (!isStackEmpty(stk)) {
+        return stk->arr[stk->topIndex];
+    }
+    return -1;
+}
+
+int main() {
+    int queries;
+    scanf("%d", &queries);
+
+    Stack inputStack, outputStack;
+    initStack(&inputStack);
+    initStack(&outputStack);
+
+    while (queries--) {
+        int queryType;
+        scanf("%d", &queryType);
+
+        if (queryType == 1) {
+            int element;
+            scanf("%d", &element);
+            pushStack(&inputStack, element);
+        } 
+        else if (queryType == 2) {
+            if (isStackEmpty(&outputStack)) {
+                while (!isStackEmpty(&inputStack)) {
+                    pushStack(&outputStack, popStack(&inputStack));
+                }
+            }
+            popStack(&outputStack);
+        } 
+        else if (queryType == 3) {
+            if (isStackEmpty(&outputStack)) {
+                while (!isStackEmpty(&inputStack)) {
+                    pushStack(&outputStack, popStack(&inputStack));
+                }
+            }
+            printf("%d\n", peekStack(&outputStack));
+        }
+    }
+    return 0;
+}

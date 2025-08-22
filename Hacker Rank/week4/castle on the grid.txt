@@ -1,0 +1,47 @@
+int minimumMoves(int grid_count, char** grid, int startX, int startY, int goalX, int goalY) {
+    int n = grid_count;
+    int visited[n][n];
+    memset(visited, 0, sizeof(visited));
+
+    int queue[n * n][3]; // {x, y, moves}
+    int front = 0, rear = 0;
+
+    queue[rear][0] = startX;
+    queue[rear][1] = startY;
+    queue[rear][2] = 0;
+    visited[startX][startY] = 1;
+    rear++;
+
+    int dx[] = {1, -1, 0, 0};
+    int dy[] = {0, 0, 1, -1};
+
+    while (front < rear) {
+        int x = queue[front][0];
+        int y = queue[front][1];
+        int moves = queue[front][2];
+        front++;
+
+        if (x == goalX && y == goalY) {
+            return moves;
+        }
+
+        for (int dir = 0; dir < 4; dir++) {
+            int nx = x + dx[dir];
+            int ny = y + dy[dir];
+
+            while (nx >= 0 && nx < n && ny >= 0 && ny < n && grid[nx][ny] != 'X') {
+                if (!visited[nx][ny]) {
+                    visited[nx][ny] = 1;
+                    queue[rear][0] = nx;
+                    queue[rear][1] = ny;
+                    queue[rear][2] = moves + 1;
+                    rear++;
+                }
+                nx += dx[dir];
+                ny += dy[dir];
+            }
+        }
+    }
+
+    return -1;
+}

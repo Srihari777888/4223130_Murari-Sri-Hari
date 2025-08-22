@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#define ALPHA_SIZE 10
+typedef struct Node {
+    struct Node *child[ALPHA_SIZE];
+    bool end;
+} Node;
+Node* newNode() {
+    Node* n = malloc(sizeof(Node));
+    n->end = false;
+    for (int i = 0; i < ALPHA_SIZE; i++) n->child[i] = NULL;
+    return n;
+}
+bool addWord(Node *root, char *str) {
+    Node *cur = root;
+    for (int i = 0; str[i]; i++) {
+        int idx = str[i] - 'a';
+        if (!cur->child[idx]) cur->child[idx] = newNode();
+        cur = cur->child[idx];
+        if (cur->end) return true;
+    }
+    for (int i = 0; i < ALPHA_SIZE; i++)
+        if (cur->child[i]) return true;
+    cur->end = true;
+    return false;
+}
+void noPrefix(int count, char **list) {
+    Node *root = newNode();
+    for (int i = 0; i < count; i++) {
+        if (addWord(root, list[i])) {
+            printf("BAD SET\n%s\n", list[i]);
+            return;
+        }
+    }
+    printf("GOOD SET\n");
+}
+int main() {
+    int n;
+    scanf("%d", &n);
+    char **arr = malloc(n * sizeof(char*));
+    for (int i = 0; i < n; i++) {
+        arr[i] = malloc(101 * sizeof(char));
+        scanf("%s", arr[i]);
+    }
+    noPrefix(n, arr);
+    for (int i = 0; i < n; i++) free(arr[i]);
+    free(arr);
+    return 0;
+}

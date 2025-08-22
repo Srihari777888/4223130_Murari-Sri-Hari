@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+long manipulate(int len, int ops) {
+    long *arr = calloc(len+2, sizeof(long));
+    if (!arr) exit(1);
+    for (int i = 0; i < ops; i++) {
+        int l, r;
+        long val;
+        scanf("%d%d%ld", &l, &r, &val);
+        arr[l] += val;
+        arr[r+1] -= val;
+    }
+    long maxNum = 0, sum = 0;
+    for (int i = 1; i <= len; i++) {
+        sum += arr[i];
+        if (sum > maxNum) maxNum = sum;
+    }
+    free(arr);
+    return maxNum;
+}
+int main() {
+    int n, m;
+    scanf("%d%d", &n, &m);
+    printf("%ld\n", manipulate(n, m));
+    return 0;
+}

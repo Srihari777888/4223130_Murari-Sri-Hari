@@ -1,0 +1,12 @@
+#include <stdio.h>
+#define M 100000
+int h[M];
+int s=0;
+void swp(int*a,int*b){int t=*a;*a=*b;*b=t;}
+void up(int i){while(i>0){int p=(i-1)/2;if(h[p]>h[i]){swp(&h[p],&h[i]);i=p;}else break;}}
+void down(int i){while(1){int l=2*i+1,r=2*i+2,sm=i;if(l<s&&h[l]<h[sm])sm=l;if(r<s&&h[r]<h[sm])sm=r;if(sm!=i){swp(&h[i],&h[sm]);i=sm;}else break;}}
+void ins(int v){h[s]=v;up(s);s++;}
+int fnd(int v){for(int i=0;i<s;i++){if(h[i]==v)return i;}return -1;}
+void del(int v){int i=fnd(v);if(i==-1)return;h[i]=h[s-1];s--;down(i);up(i);}
+int gmin(){if(s==0)return -1;return h[0];}
+int main(){int q,t,v;scanf("%d",&q);for(int i=0;i<q;i++){scanf("%d",&t);if(t==1){scanf("%d",&v);ins(v);}else if(t==2){scanf("%d",&v);del(v);}else if(t==3){printf("%d\n",gmin());}}return 0;}

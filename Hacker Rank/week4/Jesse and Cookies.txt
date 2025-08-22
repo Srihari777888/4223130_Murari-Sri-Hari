@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct {
+    int *arr;
+    int len;
+    int cap;
+} MinHeap;
+MinHeap *makeHeap(int cap) {
+    MinHeap *h = malloc(sizeof(MinHeap));
+    h->arr = malloc(sizeof(int) * cap);
+    h->len = 0;
+    h->cap = cap;
+    return h;
+}
+void swapInt(int *x, int *y) {
+    int temp = *x;
+    *x = *y;
+    *y = temp;
+}
+void siftUp(MinHeap *h, int idx) {
+    while (idx > 0) {
+        int parent = (idx - 1) / 2;
+        if (h->arr[idx] < h->arr[parent]) {
+            swapInt(&h->arr[idx], &h->arr[parent]);
+            idx = parent;
+        } else break;
+    }
+}
+void siftDown(MinHeap *h, int idx) {
+    while (1) {
+        int left = 2 * idx + 1;
+        int right = 2 * idx + 2;
+        int smallest = idx;
+
+        if (left < h->len && h->arr[left] < h->arr[smallest])
+            smallest = left;
+        if (right < h->len && h->arr[right] < h->arr[smallest])
+            smallest = right;
+
+        if (smallest != idx) {
+            swapInt(&h->arr[idx], &h->arr[smallest]);
+            idx = smallest;
+        } else break;
+    }
+}
+
+void pushHeap(MinHeap *h, int val) {
+    h->arr[h->len++] = val;
+    siftUp(h, h->len - 1);
+}
+
+int popHeap(MinHeap *h) {
+    if (h->len == 0) return -1;
+    int minVal = h->arr[0];
+    h->arr[0] = h->arr[--h->len];
+    siftDown(h, 0);
+    return minVal;
+}
+int mixCookies(int sweetTarget, int sweets[], int count) {
+    MinHeap *h = makeHeap(count * 2);
+    for (int i = 0; i < count; i++)
+        pushHeap(h, sweets[i]);
+    int steps = 0;
+    while (h->len > 1 && h->arr[0] < sweetTarget) {
+        int low1 = popHeap(h);
+        int low2 = popHeap(h);
+        int combined = low1 + 2 * low2;
+        pushHeap(h, combined);
+        steps++;
+    }
+    int answer = (h->arr[0] >= sweetTarget) ? steps : -1;
+    free(h->arr);
+    free(h);
+    return answer;
+}
+int main() {
+    int count, sweetTarget;
+    scanf("%d %d", &count, &sweetTarget);
+    int *sweets = malloc(sizeof(int) * count);
+    for (int i = 0; i < count; i++)
+        scanf("%d", &sweets[i]);
+    printf("%d\n", mixCookies(sweetTarget, sweets, count));
+    free(sweets);
+    return 0;
+}

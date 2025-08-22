@@ -1,61 +1,64 @@
 #include <stdio.h>
-#include <string.h>
 
 #define MAX 200
 
 int R, C, N;
-char grid[MAX][MAX], temp[MAX][MAX];
-
-void copy_grid(char dest[MAX][MAX], char src[MAX][MAX]) {
+char grid[MAX][MAX];
+char temp[MAX][MAX];
+void copyGrid(char dest[MAX][MAX], char src[MAX][MAX]) {
     for (int i = 0; i < R; i++)
         for (int j = 0; j < C; j++)
             dest[i][j] = src[i][j];
 }
-
-void fill_bombs(char g[MAX][MAX]) {
+void fillWithBombs(char g[MAX][MAX]) {
     for (int i = 0; i < R; i++)
         for (int j = 0; j < C; j++)
             g[i][j] = 'O';
 }
-
-void detonate(char g[MAX][MAX]) {
-    char mark[MAX][MAX];
-    fill_bombs(mark); // start with full bombs
-
+void detonate(char g[MAX][MAX], char ref[MAX][MAX]) {
+    int dr[] = {-1, 1, 0, 0};
+    int dc[] = {0, 0, -1, 1};
+    
+    fillWithBombs(g);
+    
     for (int i = 0; i < R; i++) {
         for (int j = 0; j < C; j++) {
-            if (g[i][j] == 'O') {
-                mark[i][j] = '.';
-                if (i > 0) mark[i - 1][j] = '.';
-                if (i < R - 1) mark[i + 1][j] = '.';
-                if (j > 0) mark[i][j - 1] = '.';
-                if (j < C - 1) mark[i][j + 1] = '.';
+            if (ref[i][j] == 'O') {
+                g[i][j] = '.';
+                for (int k = 0; k < 4; k++) {
+                    int nr = i + dr[k];
+                    int nc = j + dc[k];
+                    if (nr >= 0 && nr < R && nc >= 0 && nc < C)
+                        g[nr][nc] = '.';
+                }
             }
         }
     }
-    copy_grid(g, mark);
 }
 
 int main() {
     scanf("%d %d %d", &R, &C, &N);
     for (int i = 0; i < R; i++)
         scanf("%s", grid[i]);
-
+    
     if (N == 1) {
-        // initial grid
     } else if (N % 2 == 0) {
-        fill_bombs(grid);
-    } else if (N % 4 == 3) {
-        detonate(grid);
-    } else if (N % 4 == 1) {
-        detonate(grid);
-        detonate(grid);
+        fillWithBombs(grid);
+    } else {
+        char first[MAX][MAX], second[MAX][MAX];
+        detonate(first, grid);       
+        detonate(second, first);     
+        if ((N - 3) % 4 == 0)
+            copyGrid(grid, first);
+        else
+            copyGrid(grid, second);
     }
-
+    
     for (int i = 0; i < R; i++) {
         for (int j = 0; j < C; j++)
             printf("%c", grid[i][j]);
         printf("\n");
     }
+    
     return 0;
 }
