@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int value;
+    int index;
+} Pair;
+
+int cmpAsc(const void *a, const void *b) {
+    return ((Pair*)a)->value - ((Pair*)b)->value;
+}
+
+int cmpDesc(const void *a, const void *b) {
+    return ((Pair*)b)->value - ((Pair*)a)->value;
+}
+
+int countSwaps(int *arr, int n, int descending) {
+    Pair *pairs = malloc(n * sizeof(Pair));
+    for (int i = 0; i < n; i++) {
+        pairs[i].value = arr[i];
+        pairs[i].index = i;
+    }
+
+    if (descending)
+        qsort(pairs, n, sizeof(Pair), cmpDesc);
+    else
+        qsort(pairs, n, sizeof(Pair), cmpAsc);
+
+    int visited[n];
+    for (int i = 0; i < n; i++) visited[i] = 0;
+
+    int swaps = 0;
+    for (int i = 0; i < n; i++) {
+        if (visited[i] || pairs[i].index == i)
+            continue;
+
+        int cycleSize = 0;
+        int j = i;
+        while (!visited[j]) {
+            visited[j] = 1;
+            j = pairs[j].index;
+            cycleSize++;
+        }
+        if (cycleSize > 1)
+            swaps += (cycleSize - 1);
+    }
+    free(pairs);
+    return swaps;
+}
+
+int lilysHomework(int *arr, int n) {
+    int swapsAsc = countSwaps(arr, n, 0);
+    int swapsDesc = countSwaps(arr, n, 1);
+    return swapsAsc < swapsDesc ? swapsAsc : swapsDesc;
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+    int arr[n];
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+    printf("%d\n", lilysHomework(arr, n));
+    return 0;
+}

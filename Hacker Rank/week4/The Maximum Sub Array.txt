@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <limits.h>
+void calculateMaxSums(int numbers[], int size, int output[]) {
+    int maxSubarraySum = numbers[0];
+    int currentMax = numbers[0];
+    int maxSubsequenceSum = 0;
+    int maxSingleElement = numbers[0];
+    int hasPositiveNumber = 0;
+    for (int index = 0; index < size; index++) {
+        if (index > 0) {
+            currentMax = (currentMax + numbers[index] > numbers[index]) ? currentMax + numbers[index] : numbers[index];
+            if (currentMax > maxSubarraySum) {
+                maxSubarraySum = currentMax;
+            }
+        }
+        if (numbers[index] > maxSingleElement) {
+            maxSingleElement = numbers[index];
+        }
+        if (numbers[index] > 0) {
+            maxSubsequenceSum += numbers[index];
+            hasPositiveNumber = 1;
+        }
+    }
+    if (!hasPositiveNumber) {
+        maxSubsequenceSum = maxSingleElement;
+    }
+    output[0] = maxSubarraySum;
+    output[1] = maxSubsequenceSum;
+}
+int main() {
+    int testCases;
+    scanf("%d", &testCases);
+    while (testCases--) {
+        int arraySize;
+        scanf("%d", &arraySize);
+        int numbers[arraySize];
+        for (int index = 0; index < arraySize; index++) {
+            scanf("%d", &numbers[index]);
+        }
+        int result[2];
+        calculateMaxSums(numbers, arraySize, result);
+        printf("%d %d\n", result[0], result[1]);
+    }
+    return 0;
+}

@@ -1,0 +1,41 @@
+#include <stdio.h>
+int equalStacks(int stack1[], int size1, int stack2[], int size2, int stack3[], int size3) {
+    int totalHeight1 = 0, totalHeight2 = 0, totalHeight3 = 0;
+    for (int j = 0; j < size1; j++) {
+        totalHeight1 += stack1[j];
+    }
+    for (int j = 0; j < size2; j++) {
+        totalHeight2 += stack2[j];
+    }
+    for (int j = 0; j < size3; j++) {
+        totalHeight3 += stack3[j];
+    }
+    int index1 = 0, index2 = 0, index3 = 0;
+    while (totalHeight1 != totalHeight2 || totalHeight2 != totalHeight3) {
+        if (totalHeight1 >= totalHeight2 && totalHeight1 >= totalHeight3) {
+            totalHeight1 -= stack1[index1++];
+        } else if (totalHeight2 >= totalHeight1 && totalHeight2 >= totalHeight3) {
+            totalHeight2 -= stack2[index2++];
+        } else {
+            totalHeight3 -= stack3[index3++];
+        }
+    }
+    return totalHeight1;
+}
+int main() {
+    int size1, size2, size3;
+    scanf("%d %d %d", &size1, &size2, &size3);
+    int stack1[size1], stack2[size2], stack3[size3];
+    for (int j = 0; j < size1; j++) {
+        scanf("%d", &stack1[j]);
+    }
+    for (int j = 0; j < size2; j++) {
+        scanf("%d", &stack2[j]);
+    }
+    for (int j = 0; j < size3; j++) {
+        scanf("%d", &stack3[j]);
+    }
+    int result = equalStacks(stack1, size1, stack2, size2, stack3, size3);
+    printf("%d\n", result);
+    return 0;
+}

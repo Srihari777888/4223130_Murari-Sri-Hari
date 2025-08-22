@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <string.h>
+void hvp(char *x, int a, int b) {
+    int y[a];
+    memset(y, 0, sizeof(y));
+    int i = 0, j = a - 1;
+    int c = 0;
+    while (i < j) {
+        if (x[i] != x[j]) {
+            char m = (x[i] > x[j]) ? x[i] : x[j];
+            x[i] = x[j] = m;
+            y[i] = y[j] = 1;
+            c++;
+        }
+        i++;
+        j--;
+    }
+    if (c > b) {
+        printf("-1\n");
+        return;
+    }
+    int r = b - c;
+    i = 0; j = a - 1;
+    while (i <= j) {
+        if (i == j) {
+            if (r > 0 && x[i] != '9') {
+                x[i] = '9';
+            }
+        } else {
+            if (x[i] != '9') {
+                if (y[i] || y[j]) {
+                    if (r > 0) {
+                        x[i] = x[j] = '9';
+                        r--;
+                    }
+                } else if (r > 1) {
+                    x[i] = x[j] = '9';
+                    r -= 2;
+                }
+            }
+        }
+        i++;
+        j--;
+    }
+    printf("%s\n", x);
+}
+int main() {
+    int a, b;
+    scanf("%d %d", &a, &b);
+    char x[a + 1];
+    scanf("%s", x);
+    hvp(x, a, b);
+    return 0;
+}

@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#define MOD 1000000007
+long long power(long long base, int exp) {
+    long long result = 1;
+    while (exp > 0) {
+        if (exp % 2 == 1) {
+            result = (result * base) % MOD;
+        }
+        base = (base * base) % MOD;
+        exp /= 2;
+    }
+    return result;
+}
+int legoBlocks(int height, int width) {
+    long long* rowWays = (long long*)malloc((width + 1) * sizeof(long long));
+    rowWays[0] = 1;
+    for (int i = 1; i <= width; i++) {
+        rowWays[i] = 0;
+        for (int j = 1; j <= 4; j++) {
+            if (i - j >= 0) {
+                rowWays[i] = (rowWays[i] + rowWays[i - j]) % MOD;
+            }
+        }
+    }
+    long long* totalWays = (long long*)malloc((width + 1) * sizeof(long long));
+    for (int i = 1; i <= width; i++) {
+        totalWays[i] = power(rowWays[i], height);
+    }
+    long long* solidWalls = (long long*)malloc((width + 1) * sizeof(long long));
+    solidWalls[1] = totalWays[1];
+    for (int i = 2; i <= width; i++) {
+        solidWalls[i] = totalWays[i];
+        for (int j = 1; j < i; j++) {
+            solidWalls[i] = (solidWalls[i] - (solidWalls[j] * totalWays[i - j]) % MOD + MOD) % MOD;
+        }
+    }
+    long long result = solidWalls[width];
+    free(rowWays);
+    free(totalWays);
+    free(solidWalls);
+    return (int)result;
+}
+int main() {
+    int testCases;
+    scanf("%d", &testCases);
+    while (testCases--) {
+        int height, width;
+        scanf("%d %d", &height, &width);
+        printf("%d\n", legoBlocks(height, width));
+    }
+    return 0;
+}

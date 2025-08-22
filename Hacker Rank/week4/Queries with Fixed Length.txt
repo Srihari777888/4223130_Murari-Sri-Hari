@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <limits.h>
+
+int findMinOfMax(int a[], int n, int k) {
+    int dq[n], front = 0, back = -1;
+    int minVal = INT_MAX;
+    for (int i = 0; i < n; i++) {
+        if (front <= back && dq[front] <= i - k) front++;
+        while (front <= back && a[dq[back]] <= a[i]) back--;
+        dq[++back] = i;
+        if (i >= k - 1) {
+            int maxInWindow = a[dq[front]];
+            if (maxInWindow < minVal) minVal = maxInWindow;
+        }
+    }
+    return minVal;
+}
+
+int main() {
+    int n, q;
+    scanf("%d%d", &n, &q);
+    int arr[n];
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+    while (q--) {
+        int k;
+        scanf("%d", &k);
+        printf("%d\n", findMinOfMax(arr, n, k));
+    }
+    return 0;
+}

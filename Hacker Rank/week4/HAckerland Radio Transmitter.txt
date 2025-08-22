@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <stdlib.h>
+int cmp(const void *p,const void *q){
+    return (*(int*)p - *(int*)q);
+}
+int transmitters(int arr[], int n, int r){
+    qsort(arr, n, sizeof(int), cmp);
+    int idx=0, cnt=0;
+    while(idx<n){
+        cnt++;
+        int pos = arr[idx] + r;
+        while(idx<n && arr[idx] <= pos) idx++;
+        pos = arr[idx-1] + r;
+        while(idx<n && arr[idx] <= pos) idx++;
+    }
+    return cnt;
+}
+int main(){
+    int n,r;
+    scanf("%d%d",&n,&r);
+    int arr[n];
+    for(int i=0;i<n;i++) scanf("%d",&arr[i]);
+    printf("%d\n", transmitters(arr, n, r));
+    return 0;
+}
