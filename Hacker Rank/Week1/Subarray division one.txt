@@ -1,0 +1,25 @@
+#include <stdio.h>
+int countChocolateWays(int squares[], int size, int birthDay, int birthMonth) {
+    int ways = 0;
+    for(int startIndex = 0; startIndex <= size - birthMonth; startIndex++) {
+        int segmentSum = 0;
+        for(int offset = 0; offset < birthMonth; offset++) {
+            segmentSum += squares[startIndex + offset];
+        }
+        if(segmentSum == birthDay) ways++;
+    }
+    return ways;
+}
+int main() {
+    int numSquares;
+    scanf("%d", &numSquares);
+    int chocolate[numSquares];
+    for(int i = 0; i < numSquares; i++) {
+        scanf("%d", &chocolate[i]);
+    }
+    int day, month;
+    scanf("%d %d", &day, &month);
+    int result = countChocolateWays(chocolate, numSquares, day, month);
+    printf("%d\n", result);
+    return 0;
+}
