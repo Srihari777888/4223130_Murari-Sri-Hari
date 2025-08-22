@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int cmp(const void *a, const void *b) {
+    return (*(int*)a - *(int*)b);
+}
+
+void zigZagSequence(int *nums, int size) {
+    qsort(nums, size, sizeof(int), cmp);
+
+    int peakIndex = (size - 1) / 2;
+    int tempVal = nums[peakIndex];
+    nums[peakIndex] = nums[size - 1];
+    nums[size - 1] = tempVal;
+
+    int left = peakIndex + 1;
+    int right = size - 2;
+    while(left <= right){
+        tempVal = nums[left];
+        nums[left] = nums[right];
+        nums[right] = tempVal;
+        left++;
+        right--;
+    }
+
+    for(int i = 0; i < size; i++){
+        printf("%d", nums[i]);
+        if(i != size - 1) printf(" ");
+    }
+    printf("\n");
+}
+
+int main() {
+    int testCases;
+    scanf("%d", &testCases);
+    while(testCases--){
+        int n;
+        scanf("%d", &n);
+        int *arr = malloc(n * sizeof(int));
+        for(int i = 0; i < n; i++) scanf("%d", &arr[i]);
+        zigZagSequence(arr, n);
+        free(arr);
+    }
+    return 0;
+}
